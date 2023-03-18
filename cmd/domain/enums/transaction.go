@@ -1,8 +1,8 @@
 package enums
 
-type Transaction string
+type TransactionKind string
 
 const (
-	Summer Transaction = "PIX_PAYMENT"
-	Autumn Transaction = "BILL_PAYMENT"
+	Pix  TransactionKind = "PIX_PAYMENT"
+	Bill TransactionKind = "BILL_PAYMENT"
 )

@@ -9,3 +9,4 @@ Example project with pattern architectural [cqrs](https://martinfowler.com/bliki
 - add domain layer
 - add exceptions structure
 - starting entities account, payment, transaction 
+- add enum for kind by transaction

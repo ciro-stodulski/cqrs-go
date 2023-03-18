@@ -8,5 +8,14 @@ import (
 type Transaction struct {
 	AccountId entity.ID
 	Value     int
-	Type      enums.Transaction
+	Kind      enums.TransactionKind
+}
+
+func New(accountId entity.ID, value int, kind enums.TransactionKind) (*Transaction, error) {
+
+	return &Transaction{
+		AccountId: accountId,
+		Value:     value,
+		Kind:      kind,
+	}, nil
 }
