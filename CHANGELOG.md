@@ -11,3 +11,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - add domain layer
 - add exceptions structure
 - starting entities account, payment, transaction 
+- add enum for kind by transaction
+- Add command sync and query solution 
