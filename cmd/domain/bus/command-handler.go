@@ -1,5 +1,5 @@
 package bus
 
-type Handler interface {
+type CommandHandler interface {
 	Perform(Command) error
 }

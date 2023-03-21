@@ -18,18 +18,14 @@ func (cqrs *CqrsBus) AsyncDispatchCommand(command bus.Command) {
 }
 
 func (cqrs *CqrsBus) SyncDispatchCommand(command bus.Command) error {
-
 	return cqrs.commandResolver(command).Perform(command)
 }
 
 func (cqrs *CqrsBus) DispatchEvent(event *bus.Event) error {
 	// need to implement
-
 	return nil
 }
 
-func (cqrs *CqrsBus) DispatchQuery(query *bus.Query) (interface{}, error) {
-	// need to implement
-
-	return nil, nil
+func (cqrs *CqrsBus) DispatchQuery(query bus.Query) (any, error) {
+	return cqrs.queryResolver(query).Perform(query)
 }

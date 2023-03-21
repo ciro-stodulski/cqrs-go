@@ -1,10 +1,9 @@
-package billpaymenthandlers
+package billpaymentcommandhandlers
 
 import (
 	"cqrs-go/cmd/domain/bus"
 	"cqrs-go/cmd/domain/params"
 	"cqrs-go/cmd/domain/services"
-	"fmt"
 )
 
 type billPaymentCommandHandlers struct {
@@ -12,7 +11,7 @@ type billPaymentCommandHandlers struct {
 	billPaymentService services.BillPaymentService
 }
 
-func New(accountService services.AccountService, billPaymentService services.BillPaymentService) bus.Handler {
+func New(accountService services.AccountService, billPaymentService services.BillPaymentService) bus.CommandHandler {
 	return &billPaymentCommandHandlers{
 		accountService:     accountService,
 		billPaymentService: billPaymentService,
@@ -20,10 +19,9 @@ func New(accountService services.AccountService, billPaymentService services.Bil
 }
 
 func (bpH *billPaymentCommandHandlers) Perform(command bus.Command) error {
+	params := command.Data().(params.CreateBillPaymentParams)
 
-	fmt.Println(command.Data().(params.CreateBillPaymentParams).AccountId)
-
-	bpH.accountService.GetAccountByDocument("test")
+	bpH.accountService.GetAccountByDocument(params.ReceiveDocumentAccount)
 
 	return nil
 }

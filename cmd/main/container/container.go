@@ -1,15 +1,18 @@
 package container
 
 import (
-	appcommands "cqrs-go/cmd/application/commands"
-	billpaymenthandlers "cqrs-go/cmd/application/handlers/bill-payment-command"
+	appcommmands "cqrs-go/cmd/application/commands"
+	billpaymentcommandhandlers "cqrs-go/cmd/application/handlers/bill-payment-command"
+	getstatementqueryhandlers "cqrs-go/cmd/application/handlers/get-statament-query"
+	appqueries "cqrs-go/cmd/application/queries"
 	"cqrs-go/cmd/domain/bus"
 	"cqrs-go/cmd/main/container/factories"
 )
 
 type (
 	Container struct {
-		Bd map[string]bus.Handler
+		Commands map[string]bus.CommandHandler
+		Query    map[string]bus.QueryHandle
 	}
 )
 
@@ -20,17 +23,28 @@ func New() *Container {
 
 	billPaymentService := factories.MakeServiceContext(infraContext).BillPaymentService
 
+	statementService := factories.MakeServiceContext(infraContext).StatementService
+
 	c := &Container{
-		Bd: map[string]bus.Handler{
-			appcommands.CommandName: billpaymenthandlers.New(accountService, billPaymentService),
+		Commands: map[string]bus.CommandHandler{
+			appcommmands.CreateBillPaymentCommandName: billpaymentcommandhandlers.New(accountService, billPaymentService),
+		},
+		Query: map[string]bus.QueryHandle{
+			appqueries.GetStatementQueryName: getstatementqueryhandlers.New(accountService, statementService),
 		},
 	}
 
 	return c
 }
 
-func (c *Container) Resolve(name string, kind any) bus.Handler {
-	t := c.Bd[name]
+func (c *Container) ResolveCommand(name string, kind any) bus.CommandHandler {
+	t := c.Commands[name]
+
+	return t
+}
+
+func (c *Container) ResolveQuery(name string, kind any) bus.QueryHandle {
+	t := c.Query[name]
 
 	return t
 }

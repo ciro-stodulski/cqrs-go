@@ -1,8 +1,8 @@
 package bus
 
-type Command interface {
-	Type() any
+type Query interface {
 	Name() string
-	Data() any
 	Timestamp() string
+	Data() any
+	Type() any
 }

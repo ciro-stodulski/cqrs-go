@@ -1,7 +1,7 @@
 package controllerbillpayment
 
 import (
-	appcommands "cqrs-go/cmd/application/commands"
+	appcommmands "cqrs-go/cmd/application/commands"
 	"cqrs-go/cmd/domain/bus"
 	entity "cqrs-go/cmd/domain/entities"
 	domainexceptions "cqrs-go/cmd/domain/exceptions"
@@ -31,13 +31,13 @@ func (rc *registerController) LoadRoute() controllers.CreateRoute {
 
 func (rc *registerController) Handle(req controllers.HttpRequest) (*controllers.HttpResponse, error) {
 
-	command := appcommands.NewCreateBillPaymentCommand(params.CreateBillPaymentParams{
+	command := appcommmands.NewCreateBillPaymentCommand(params.CreateBillPaymentParams{
 		AccountId:              entity.NewID(),
 		ReceiveDocumentAccount: "0000578974",
 		Value:                  200,
 	})
 
-	err := rc.bus.SyncDispatchCommand(appcommands.NewCreateBillPaymentCommand(command.Data().(params.CreateBillPaymentParams)))
+	err := rc.bus.SyncDispatchCommand(command)
 
 	if err != nil {
 		return nil, err
