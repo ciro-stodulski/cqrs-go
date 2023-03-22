@@ -2,10 +2,13 @@ package container
 
 import (
 	appcommmands "cqrs-go/cmd/application/commands"
-	billpaymentcommandhandlers "cqrs-go/cmd/application/handlers/bill-payment-command"
-	getstatementqueryhandlers "cqrs-go/cmd/application/handlers/get-statament-query"
+	appsevents "cqrs-go/cmd/application/events"
+	commandbillpaymenthandler "cqrs-go/cmd/application/handlers/command-bill-payment"
+	eventnotificationtransactionhandler "cqrs-go/cmd/application/handlers/event-notification-transaction"
+	querygetstatementhandler "cqrs-go/cmd/application/handlers/query-get-statament"
 	appqueries "cqrs-go/cmd/application/queries"
 	"cqrs-go/cmd/domain/bus"
+	busevent "cqrs-go/cmd/main/bus-event"
 	"cqrs-go/cmd/main/container/factories"
 )
 
@@ -13,24 +16,25 @@ type (
 	Container struct {
 		Commands map[string]bus.CommandHandler
 		Query    map[string]bus.QueryHandle
+		Event    map[string]bus.EventHandle
+		Bus      bus.Bus
 	}
 )
 
 func New() *Container {
 	infraContext := factories.MakeInfraContext()
-
-	accountService := factories.MakeServiceContext(infraContext).AccountService
-
-	billPaymentService := factories.MakeServiceContext(infraContext).BillPaymentService
-
-	statementService := factories.MakeServiceContext(infraContext).StatementService
+	service := factories.MakeServiceContext(infraContext)
+	evenBus := busevent.NewEventBus()
 
 	c := &Container{
 		Commands: map[string]bus.CommandHandler{
-			appcommmands.CreateBillPaymentCommandName: billpaymentcommandhandlers.New(accountService, billPaymentService),
+			appcommmands.CreateBillPaymentCommandName: commandbillpaymenthandler.New(service.AccountService, service.BillPaymentService, evenBus),
 		},
 		Query: map[string]bus.QueryHandle{
-			appqueries.GetStatementQueryName: getstatementqueryhandlers.New(accountService, statementService),
+			appqueries.GetStatementQueryName: querygetstatementhandler.New(service.AccountService, service.StatementService),
+		},
+		Event: map[string]bus.EventHandle{
+			appsevents.TransactionEventName: eventnotificationtransactionhandler.New(service.NotificationService),
 		},
 	}
 
@@ -45,6 +49,12 @@ func (c *Container) ResolveCommand(name string, kind any) bus.CommandHandler {
 
 func (c *Container) ResolveQuery(name string, kind any) bus.QueryHandle {
 	t := c.Query[name]
+
+	return t
+}
+
+func (c *Container) ResolveEvent(name string, kind any) bus.EventHandle {
+	t := c.Event[name]
 
 	return t
 }
