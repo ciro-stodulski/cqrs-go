@@ -12,4 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - add exceptions structure
 - starting entities account, payment, transaction 
 - add enum for kind by transaction
-- Add command sync and query solution 
+- add command sync and query solution 
+- add event and event emitter
+- add event and event emitter
+- add service notification
