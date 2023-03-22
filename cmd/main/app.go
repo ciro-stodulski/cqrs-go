@@ -1,7 +1,7 @@
 package app
 
 import (
-	"cqrs-go/cmd/main/bus"
+	corebus "cqrs-go/cmd/main/bus"
 	"cqrs-go/cmd/main/container"
 	"cqrs-go/cmd/main/modules"
 	"cqrs-go/cmd/main/modules/http"
@@ -33,7 +33,7 @@ func New() error {
 
 	app := &App{
 		modules: []modules.Module{
-			http.New(bus.New(c)),
+			http.New(corebus.NewbusCqrs(c)),
 		},
 	}
 

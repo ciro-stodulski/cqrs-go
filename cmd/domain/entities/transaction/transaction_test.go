@@ -14,7 +14,7 @@ func TestTransaction(t *testing.T) {
 		fakeAccount := entity.NewID()
 		value := 100
 
-		fakeTransaction, err := New(fakeAccount, value, enums.Pix)
+		fakeTransaction, err := New(fakeAccount, value, enums.Pix, enums.Successful)
 
 		assert.NotNil(t, fakeTransaction)
 		assert.Nil(t, err)

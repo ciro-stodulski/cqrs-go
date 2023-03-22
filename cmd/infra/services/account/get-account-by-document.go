@@ -2,12 +2,11 @@ package accountservice
 
 import (
 	"cqrs-go/cmd/domain/entities/account"
-	"fmt"
+	"log"
 )
 
 func (aService *accountService) GetAccountByDocument(document string) (*account.Account, error) {
-
-	fmt.Println(document)
+	log.Default().Println("Getting account by document: " + document)
 
 	return nil, nil
 }

@@ -23,7 +23,7 @@ func New(bus bus.Bus) controllers.Controller {
 
 func (rc *registerController) LoadRoute() controllers.CreateRoute {
 	return controllers.CreateRoute{
-		PathRoot: "/v1/bill-payments",
+		PathRoot: "/v1/payment-process",
 		Method:   "post",
 		Path:     "/",
 	}
@@ -33,18 +33,14 @@ func (rc *registerController) Handle(req controllers.HttpRequest) (*controllers.
 
 	command := appcommmands.NewCreateBillPaymentCommand(params.CreateBillPaymentParams{
 		AccountId:              entity.NewID(),
-		ReceiveDocumentAccount: "0000578974",
-		Value:                  200,
+		ReceiveDocumentAccount: "01401507464",
+		Value:                  500,
 	})
 
-	err := rc.bus.SyncDispatchCommand(command)
-
-	if err != nil {
-		return nil, err
-	}
+	rc.bus.AsyncDispatchCommand(command)
 
 	return &controllers.HttpResponse{
-		Status: 204,
+		Status: 202,
 	}, nil
 }
 

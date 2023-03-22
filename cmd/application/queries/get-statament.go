@@ -35,5 +35,5 @@ func (c *getStatementQuery) Data() any {
 }
 
 func (c *getStatementQuery) Timestamp() string {
-	return time.Now().UTC().Format(time.RFC3339Nano)
+	return c.timestamp
 }

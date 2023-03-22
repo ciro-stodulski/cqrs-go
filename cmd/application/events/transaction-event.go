@@ -7,14 +7,14 @@ import (
 )
 
 type transactionEvent struct {
-	data      params.TransactionParams
+	data      params.NotificationTransactionParams
 	timestamp string
 	name      string
 }
 
 var TransactionEventName = "TransactionEvent"
 
-func NewTransactionEvent(data params.TransactionParams) bus.Event {
+func NewTransactionEvent(data params.NotificationTransactionParams) bus.Event {
 	return &transactionEvent{data: data, timestamp: time.Now().UTC().Format(time.RFC3339Nano),
 		name: TransactionEventName,
 	}

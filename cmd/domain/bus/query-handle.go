@@ -1,5 +1,5 @@
 package bus
 
 type QueryHandle interface {
-	Perform(query any) (any, error)
+	Perform(Query) (any, error)
 }

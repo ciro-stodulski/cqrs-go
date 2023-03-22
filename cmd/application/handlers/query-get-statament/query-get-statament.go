@@ -1,4 +1,4 @@
-package getstatementqueryhandlers
+package querygetstatementhandler
 
 import (
 	"cqrs-go/cmd/domain/bus"
@@ -18,6 +18,6 @@ func New(accountService services.AccountService, statementService services.State
 	}
 }
 
-func (gsqh *getStatementQueryHandler) Perform(query any) (any, error) {
+func (gsqh *getStatementQueryHandler) Perform(bus.Query) (any, error) {
 	return gsqh.statementService.GetStatementByAccountId(entity.NewID())
 }
